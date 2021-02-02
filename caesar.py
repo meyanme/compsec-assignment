@@ -5,10 +5,19 @@ Created on Wed Dec 23 11:59:50 2020
 @author: Computer Security (TSN3251)  Trimester 2022
 """
 #https://www.tutorialspoint.com/cryptography_with_python/cryptography_with_python_caesar_cipher.htm
+def openFile(textfile):
+   file_content = ""
+   file_name = textfile+'.txt'
+   with open(file_name, 'r+') as file:
+      line_in_file = file.readlines()
+      for line in line_in_file:
+         file_content+=line
+   return file_content
+
+
 def encrypt(text,s):
    curr_char = ''
    result = ""
-   # transverse the plain text
    for i in range(len(text)):
       char = text[i]
       # Encrypt uppercase characters in plain text 
@@ -18,12 +27,10 @@ def encrypt(text,s):
          print ("i= ",i, "; Plaintext = ", char, ";added = ", curr_char, "; Ciphertext: ",  result)
       # Encrypt lowercase characters in plain text
       else:
-         #result += chr((ord(char) + s - 97) % 26 + 97)
          curr_char = "Z"
          result += curr_char
          print ("i= ",i, "; Plaintext = ", char, ";added = ", curr_char, "; Ciphertext: ",  result)
    return result
-#check the above function
 
 # The chr() function returns the character that represents the specified unicode.
 # The ord() function returns the number representing the unicode code of a specified character.
@@ -44,30 +51,40 @@ def hackcaeser(message,LETTERS):
          else:
             translated = translated + symbol
       print('Hacking key #%s: %s' % (key, translated))
-   #return [key, translated]
+
+
 
 def main():
-    #message = 'THE GERMAN ATTACK'
-    #key = 'SECRET'
-    plaintext = input('enter message:\n')
-    #message=message.replace(" ", "") # removes spaces
-    #plaintext=plaintext.upper()  # coverts all text to uppercase
-    key = int(input('enter your key:\n'))
-    #key=key.upper()
-    ciphertext = encrypt(plaintext, key)
-    print ('\n')
-    #text = "CEASER CIPHER DEMO"
-    #s = 4
 
-    print ("Plaintext : " + plaintext)
-    print ("Shift pattern : " + str(key))
-    print ("Ciphertext: ",  ciphertext)
+   print ("#1: Encrypt from file\n")
+   print ("#2: Decrypt from file\n")
+   print ("#3: Hack cipher with brute force\n")
+   option = input("Option = ")
+   if option == 1:
 
-    message = ciphertext #encrypted message
-    LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    #hacked=hackcaeser(message,LETTERS)
-    hackcaeser(message,LETTERS)
-    #print (hacked)
+   elif option == 2:
+      
+   elif option == 3:
+
+   else:
+
+
+   filename = input('filename:\n')
+   plaintext = openFile(filename)
+   #plaintext = input('enter message:\n')
+   key = int(input('enter your key:\n'))
+   ciphertext = encrypt(plaintext, key)
+   print ('\n')
+   #text = "CEASER CIPHER DEMO"
+   #s = 4
+
+   print ("Plaintext : " + plaintext)
+   print ("Shift pattern : " + str(key))
+   print ("Ciphertext: ",  ciphertext)
+
+   message = ciphertext                        #encrypted message
+   LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+   hackcaeser(message,LETTERS)
 
 
 # Executes the main function
