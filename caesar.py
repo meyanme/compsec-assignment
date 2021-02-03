@@ -22,24 +22,24 @@ def openFile(textfile):
          except:(FileNotFoundError)
 
 
-def encrypt(text,s):
+def encrypt(text,key):
    curr_char = ''
    result = ""
    for i in range(len(text)):
       char = text[i]
       # Encrypt uppercase characters in plain text 
       if (char.isupper()):
-         curr_char = chr((ord(char) + s-65) % 26 + 65)
+         curr_char = chr((ord(char) + key-65) % 26 + 65)
          result += curr_char
          print ("i= ",i, "; Plaintext = ", char, ";added = ", curr_char, "; Ciphertext: ",  result)
-      # Encrypt whitespace -> Z
+      # Encrypt whitespace -> Z   
       elif (char.isspace()):
          curr_char = "Z"
          result += curr_char
          print ("i= ",i, "; Plaintext = ", char, ";added = ", curr_char, "; Ciphertext: ",  result)
       # Encrypt lowercase characters in plain text
       else:
-         curr_char = chr((ord(char) + s - 97) % 26 + 97)
+         curr_char = chr((ord(char) + key - 97) % 26 + 97)
          result += curr_char
          print ("i= ",i, "; Plaintext = ", char, ";added = ", curr_char, "; Ciphertext: ",  result)
    return result
@@ -49,10 +49,29 @@ def encrypt(text,s):
 # lalalallaa
 
 
-def decrypt():
+def decrypt(text,key):
    #TODO
-   pass
-
+   curr_char = ''
+   result = ""
+   for i in range(len(text)):
+      char = text[i]
+      # Encrypt uppercase characters in plain text 
+      if (char.isupper()):
+         curr_char = chr((ord(char) - key-65) % 26 + 65)
+         result += curr_char
+         print ("i= ",i, "; Ciphertext = ", char, ";added = ", curr_char, "; Plaintext: ",  result)
+      # Encrypt whitespace -> Z   
+      # elif (char.isspace()):
+      #    curr_char = "Z"
+      #    result += curr_char
+      #    print ("i= ",i, "; Ciphertext = ", char, ";added = ", curr_char, "; Plaintext: ",  result)
+      # Encrypt lowercase characters in plain text
+      else:
+         curr_char = chr((ord(char) - key - 97) % 26 + 97)
+         result += curr_char
+         print ("i= ",i, "; Ciphertext = ", char, ";added = ", curr_char, "; Plaintext: ",  result)
+   return result
+   
 
 
 def hackcaeser(message,LETTERS):
@@ -94,15 +113,26 @@ def main():
       elif option == "2":
          pass
          #TODO: decrypt()
+         filename = input('filename:\n')
+         ciphertext = openFile(filename)
+         print ("File content: ", ciphertext)
+         #plaintext = input('enter message:\n')
+         key = int(input('enter your key:\n'))
+         plaintext = decrypt(ciphertext, key)
+         print ('\n')
+         main()
 
       elif option == "3":
-         print ("Plaintext : " + plaintext)
-         print ("Shift pattern : " + str(key))
-         print ("Ciphertext: ",  ciphertext)
+         filename = input('filename:\n')
+         ciphertext = openFile(filename)
 
-         message = ciphertext                        #encrypted message
+         print ("File content: ", ciphertext)
+         # print ("Plaintext : " + plaintext)
+         # print ("Shift pattern : " + str(key))
+         # print ("Ciphertext: ",  ciphertext)
+
          LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-         hackcaeser(message,LETTERS)
+         hackcaeser(ciphertext,LETTERS)
 
       elif option == "4": 
          break
@@ -110,8 +140,6 @@ def main():
       else:
          print ("Invalid Input\n\n")
          continue
-     
-   
 
    
    #text = "CEASER CIPHER DEMO"
