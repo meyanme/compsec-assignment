@@ -50,7 +50,6 @@ def encrypt(text,key):
 
 
 def decrypt(text,key):
-   #TODO
    curr_char = ''
    result = ""
    for i in range(len(text)):
@@ -60,11 +59,6 @@ def decrypt(text,key):
          curr_char = chr((ord(char) - key-65) % 26 + 65)
          result += curr_char
          print ("i= ",i, "; Ciphertext = ", char, ";added = ", curr_char, "; Plaintext: ",  result)
-      # Encrypt whitespace -> Z   
-      # elif (char.isspace()):
-      #    curr_char = "Z"
-      #    result += curr_char
-      #    print ("i= ",i, "; Ciphertext = ", char, ";added = ", curr_char, "; Plaintext: ",  result)
       # Encrypt lowercase characters in plain text
       else:
          curr_char = chr((ord(char) - key - 97) % 26 + 97)
@@ -101,38 +95,31 @@ def main():
       print()
    
       if option == "1":
-         filename = input('filename:\n')
-         plaintext = openFile(filename)
+         filename = input('filename: ')
+         plaintext = openFile(filename)      
          print ("File content: ", plaintext)
-         #plaintext = input('enter message:\n')
-         key = int(input('enter your key:\n'))
+
+         key = int(input('enter your key: '))
          ciphertext = encrypt(plaintext, key)
          print ('\n')
-         main()
 
       elif option == "2":
-         pass
-         #TODO: decrypt()
-         filename = input('filename:\n')
+         filename = input('filename: ')
          ciphertext = openFile(filename)
          print ("File content: ", ciphertext)
-         #plaintext = input('enter message:\n')
-         key = int(input('enter your key:\n'))
+
+         key = int(input('enter your key: '))
          plaintext = decrypt(ciphertext, key)
          print ('\n')
-         main()
 
       elif option == "3":
-         filename = input('filename:\n')
+         filename = input('filename: ')
          ciphertext = openFile(filename)
-
-         print ("File content: ", ciphertext)
-         # print ("Plaintext : " + plaintext)
-         # print ("Shift pattern : " + str(key))
-         # print ("Ciphertext: ",  ciphertext)
+         print ("\nFile content: ", ciphertext)
 
          LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
          hackcaeser(ciphertext,LETTERS)
+         print()
 
       elif option == "4": 
          break
