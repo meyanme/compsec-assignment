@@ -32,9 +32,14 @@ def encrypt(text,s):
          curr_char = chr((ord(char) + s-65) % 26 + 65)
          result += curr_char
          print ("i= ",i, "; Plaintext = ", char, ";added = ", curr_char, "; Ciphertext: ",  result)
+      # Encrypt whitespace -> Z
+      elif (char.isspace()):
+         curr_char = "Z"
+         result += curr_char
+         print ("i= ",i, "; Plaintext = ", char, ";added = ", curr_char, "; Ciphertext: ",  result)
       # Encrypt lowercase characters in plain text
       else:
-         curr_char = "Z"
+         curr_char = chr((ord(char) + s - 97) % 26 + 97)
          result += curr_char
          print ("i= ",i, "; Plaintext = ", char, ";added = ", curr_char, "; Ciphertext: ",  result)
    return result
@@ -42,6 +47,11 @@ def encrypt(text,s):
 # The chr() function returns the character that represents the specified unicode.
 # The ord() function returns the number representing the unicode code of a specified character.
 # lalalallaa
+
+
+def decrypt():
+   #TODO
+   pass
 
 
 
@@ -83,10 +93,9 @@ def main():
 
       elif option == "2":
          pass
-         #TODO: DECRYPTFUNCTION
+         #TODO: decrypt()
 
       elif option == "3":
-         pass
          print ("Plaintext : " + plaintext)
          print ("Shift pattern : " + str(key))
          print ("Ciphertext: ",  ciphertext)
