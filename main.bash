@@ -1,7 +1,5 @@
 #!/bin/bash
 
-
-
 main(){
 	echo '-------------------------------------------- '
 	echo '           Clasical Cipher Program           '
@@ -26,6 +24,7 @@ main(){
 
 			Hack)
 			#hacking timeee
+			hacking
 			;;
 
 			Exit)
@@ -93,20 +92,79 @@ decrypt(){
 	echo "Decryption Done"
 }
 
-input_decrypt(){
-	echo 'Ciphertext:'
-	read cipherText
 
-	echo 'Key       :'
-	read key
+hacking() {
+    
+    LETTERS=('A' 'B' 'C' 'D' 'E' 'F' 'G' 'H' 'I' 'J' 'K' 'L' 'M' 'N' 'O' 'P' 'Q' 'R' 'S' 'T' 'U' 'V' 'W' 'X' 'Y' 'Z')
+    letters=('a' 'b' 'c' 'd' 'e' 'f' 'g' 'h' 'i' 'j' 'k' 'l' 'm' 'n' 'o' 'p' 'q' 'r' 's' 't' 'u' 'v' 'w' 'x' 'y' 'z')
+ 
+    read -p 'Enter Ciphertext: ' cipherText
+    echo 'Received Cipher Text is --> ' ${cipherText}
+    
+    cipherLength=${#cipherText}
+    length=${#LETTERS[@]}
+    echo $length
+       
+    for ((key=0; key<length; key++))                    #for loop to iterate [A-Z]
+    do
+        translated="->"
+        num=0
+        for ((i=0; i<cipherLength; i++))   #for loop to iterate cipherText
+        do
+            cipherChar=${cipherText:i:1}
+            count=0
+            for j in {A..Z}
+            do
+                if [[ $j == $cipherChar ]]
+                    then
+                    break
+                else
+                fi
+                let count=$count+1
+            done
+        
+            if grep -q ${cipherChar} <<< ${LETTERS[@]}       #check upper()
+                then
+                let num=$count
+                let num=$num-$key
+                if [[ $num<0 ]]
+                    then
+                    let num=$num+26
+                fi
+                translated=${translated}${LETTERS[$num]}
+                
+            elif grep -q ${cipherChar} <<< ${letters[@]}     #check lower()
+                then
+                let num=$count
+                let num=$num-$key
+                if [[ $num<0 ]]
+                    then
+                    let num=$num+26
+                fi
+                translated=${translated}{$letters[$num]}
+                
+            else
+                translated=${translated}${cipherChar}
+            fi
+        done
+        echo 'Hacking Key #'$key': '$translated
+    done
 }
+
+
+input_decrypt(){
+	read -p 'Ciphertext:' cipherText
+	read -p 'Key       :' key
+}
+
 
 input_encrypt(){
-	echo 'Plaintext:'
-	read plainText
-
-	echo 'Key      :'
-	read key
+	read -p 'Plaintext :' plainText
+	read -p 'Key       :' key
 }
 
+
+
 main
+
+
