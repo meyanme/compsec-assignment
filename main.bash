@@ -4,7 +4,7 @@ main(){
 	echo '-------------------------------------------- '
 	echo '           Clasical Cipher Program           '
 	echo '---------------------------------------------'
-	echo '           Please select and option          '
+	echo '           Please select an option           '
 	echo '                                             '
 	select opt in Encryption Decryption Hack Exit; do
 	echo '                                             '
@@ -13,35 +13,64 @@ main(){
 
 		case $opt in
 			Encryption)
-			encrypt
-			echo ''
-			;;
+				encrypt
+				echo ''
+				;;
 
 			Decryption)
-			decrypt
-			echo ''
-
-			;;
+				decrypt
+				echo ''
+				;;
 
 			Hack)
-			hacking
-			echo ''
-			;;
+				hacking
+				echo ''
+				;;
 
 			Exit)
-			echo "Exit Succesfully"
-			exit                    
+				echo "Exit Succesfully"
+				exit
+				;;
+
+			*)
+            	echo "Invalid option"
+            	;;                    
 		esac                        
+	done
+}
+
+ask_input() {
+	select menu in EnterOwnWord PickFromTextfile; do
+	echo '                                             '
+	echo '---------------------------------------------'
+		case $menu in
+			EnterOwnWord)
+				input_word
+				echo ''
+				break
+				;;
+
+			PickFromTextfile)
+				input_encrypt
+				echo ''
+				break
+				;;
+
+			*)
+				echo '--> Invalid Input!'
+				;;
+		esac
 	done
 }
 
 encrypt(){
 	echo '             E N C R Y P T I O N             '
 	echo '---------------------------------------------'
-	newcharacter=''
-	input_encrypt									#function to read file
+
+	ask_input										#input word or input textfile?
+	newcharacter=''									
 	plainText=$text
-	key=$encryptkey
+	key=$key
 
 	echo 'Received Plain Text is --> ' ${plainText}
 	echo 'Received key is        --> ' ${key}
@@ -70,21 +99,22 @@ encrypt(){
 decrypt(){
 	echo '             D E C R Y P T I O N             '
 	echo '---------------------------------------------'
+
+	ask_input										#input word or input textfile?
 	newcharacter=''
-	input_decrypt								#function to read file	
 	cipherText=$text
-	key=$encryptkey
+	key=$key
 
 	echo 'Received Cipher Text is --> ' ${cipherText}
 	echo 'Received key is         --> ' ${key}
-    length=${#cipherText}						#ciphertextlength
-	for ((i=0; i<length; i++))					#iterate text length
+    length=${#cipherText}							#ciphertextlength
+	for ((i=0; i<length; i++))						#iterate text length
 	do 
-		character=${cipherText:i:1}				#split intro single char
-		deci=$(printf "%d" "'${character}")		#convert to ASCII
-		if [[ ${character} =~ [A-Z] ]]			#check for uppercase
+		character=${cipherText:i:1}					#split intro single char
+		deci=$(printf "%d" "'${character}")			#convert to ASCII
+		if [[ ${character} =~ [A-Z] ]]				#check for uppercase
 		then
-			let deci=$(($deci-key-65))			#ceaser calculation
+			let deci=$(($deci-key-65))				#ceaser calculation
 			if [[ ${deci} -lt 0 ]]
 			then
 				let deci=$(($deci%26+26+65))
@@ -111,12 +141,13 @@ decrypt(){
 hacking() {
 	echo '    B R U T E   F O R C E  H A C K I N G     '
 	echo '---------------------------------------------'
-    
+
+	ask_input								#input word or input textfile?
+
 	#array of 26 alphabet for brute force checking
     LETTERS=('A' 'B' 'C' 'D' 'E' 'F' 'G' 'H' 'I' 'J' 'K' 'L' 'M' 'N' 'O' 'P' 'Q' 'R' 'S' 'T' 'U' 'V' 'W' 'X' 'Y' 'Z')
     letters=('a' 'b' 'c' 'd' 'e' 'f' 'g' 'h' 'i' 'j' 'k' 'l' 'm' 'n' 'o' 'p' 'q' 'r' 's' 't' 'u' 'v' 'w' 'x' 'y' 'z')
  
-	input_file								#function to read file
 	cipherText=$text
     echo 'Received Cipher Text is --> ' ${cipherText}
     echo ''
@@ -178,40 +209,25 @@ hacking() {
 }
 
 
-input_decrypt(){
-	text=''
-	read -p 'Enter filename :' filename			#get file name
-	read -p 'Key            :' encryptkey		#get decryption key
-	txt='.txt'
-	filename=$filename$txt
-	echo 'File ('$filename') is being read'
-	echo ''
-	text=$(<$filename)							#read file content
-}
-
-
 input_encrypt(){
 	text=''
-	read -p 'Enter filename :' filename			#get file name
-	read -p 'Key            :' encryptkey		#get decryption key
+	filename=''
+	key=0
+	read -p 'Enter filename 			   :' filename		#get file name
+	read -p 'Key (ignore if using brute force)  :' key		#get key
 	txt='.txt'
 	filename=$filename$txt
 	echo 'File ('$filename') is being read'
 	echo ''
-	text=$(<$filename)							#read file content
+	text=$(<$filename)										#read file content
 }
 
-input_file() {
-	text=''
-	read -p 'Enter filename :' filename			#get file name
-	txt='.txt'
-	filename=$filename$txt
-	echo 'File ('$filename') is being read'
-	echo ''
-	text=$(<$filename)							#read file content
 
+input_word() {
+	text=''
+	key=0
+	read -p 'Enter text 			   :' text		    	#get file name
+	read -p 'Key (ignore if using brute force)  :' key		#get key
 }
 
 main
-
-
