@@ -131,14 +131,23 @@ hacking() {
         do
             cipherChar=${cipherText:i:1}	#split text into single char
             count=0
-            for j in {A..Z}					#loop to find decrypted char value
+			mcount=0
+            for J in {A..Z}					#loop to find decrypted char value
             do
-                if [[ $j == $cipherChar ]]	#if value found, exit
+                if [[ $J == $cipherChar ]]	#if value found, exit
                     then
                     break
                 fi
                 let count=$count+1			#increment value until found
             done
+			for j in {a..z}
+			do
+				if [[ $j == $cipherChar ]]
+					then
+					break
+				fi
+				let mcount=$mcount+1
+			done
         
             if grep -q ${cipherChar} <<< ${LETTERS[@]}      #check uppercase
                 then
@@ -152,13 +161,13 @@ hacking() {
                 
             elif grep -q ${cipherChar} <<< ${letters[@]}    #check lowercase
                 then
-                let num=$count
+                let num=$mcount
                 let num=$num-$key							#decrypted char value minus attempted key(0-25)
                 if [[ $num<0 ]]
                     then
                     let num=$num+26
                 fi
-                translated=${translated}{$letters[$num]}	#append brute force hack result
+                translated=${translated}${letters[$num]}	#append brute force hack result
                 
             else
                 translated=${translated}${cipherChar}
